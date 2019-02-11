@@ -45,9 +45,9 @@ def calculate_model_prediction(df):
   num_images = df.num_images.reset_index()
 
   X = topic_cat.merge(sentiment_compound, on='index')
-  X = X.merge(sentiment_pos, on='index')
-  X = X.merge(sentiment_neg, on='index')
-  X = X.merge(sentiment_neu, on='index')
+#   X = X.merge(sentiment_pos, on='index')
+#   X = X.merge(sentiment_neg, on='index')
+#   X = X.merge(sentiment_neu, on='index')
   X = X.merge(readability_index, on='index')
   X = X.merge(word_count, on='index')
   X = X.merge(unique_word_count, on='index')
@@ -57,9 +57,20 @@ def calculate_model_prediction(df):
   X = X.merge(facebook_shares, on='index')
   X = X.merge(num_images, on='index')
   X = X.drop(['index'],axis=1)
+  
+  print('Types00: ')
+  print(X.dtypes)
+  print(X['topic_num'])
+#   X.loc[:,'topic_num'] = X['topic_num'].astype('category')
+  X['topic_num'] = pd.Categorical(X.topic_num)
+  print('Types: ')
+  print(X.dtypes)
+  print(X['topic_num'])
     
   bins = [[0,5],[5,10],[10,20],[20,50],[50,100],[100,200],[200,500],[500,1000],[1000,10000],[10000,1000000]]
   model_lgbm = lgbm.Booster(model_file='./insight_flask_app/lgbm_model') 
+  
+  
   predicted_claps_class = int(np.argmax(model_lgbm.predict(X),axis=1))
   print('Predicted class: ',predicted_claps_class)
   min_claps = bins[predicted_claps_class][0]
