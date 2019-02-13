@@ -35,7 +35,8 @@ def get_lemma(word):
 def prepare_text_for_lda(text):
     re_tokenizer = RegexpTokenizer(r'\w+')
     tokens = re_tokenizer.tokenize(text.lower())
-    newStopWords = ['company','business','startup','http','com','www','https','will']
+    newStopWords = ['company','business','startup','http','com','www','https','will',
+      'follow','following','blocked','unblock']
     en_stop = nltk.corpus.stopwords.words('english')
     en_stop.extend(newStopWords)
 
