@@ -12,11 +12,13 @@ import itertools
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
-# file = '../Model/df_medium_preprocessed.pkl'
-file = '../../Project/df_020419_preprocessed_4.pkl'
+file = '../Model/df_medium_preprocessed.pkl'
 df = pd.read_pickle(file)
 
-df['class'] = np.nan
+df = df[df.word_count > 200].copy()
+df.reset_index(inplace=True)
+
+df['class_average'] = np.nan
 df['num_images'] = pd.to_numeric(df['num_images'])
 
 bins = [[0,5],[5,10],[10,20],[20,50],[50,100],[100,200],[200,500],[500,1000],[1000,10000],[10000,1000000]]
@@ -31,9 +33,14 @@ for ibin,bin in enumerate(bins):
 
 topic_class_modes = df.groupby('topic_num')['class'].apply(lambda x: x.mode()[0])
 df['topic_class_mode'] = np.nan
+# topic_class_mean = df.groupby('topic_num')['claps_num'].apply(lambda x: x.mean())
+# df['topic_class_mean'] = np.nan
 for ind,topic in enumerate(df.topic_num):
   df.loc[ind,'topic_class_mode'] = topic_class_modes[topic]
-
+#   for ibin,bin in enumerate(bins):
+#     if (topic_class_mean[ind]>=bin[0] and topic_class_mean[ind]<bin[1]):
+#       df.loc[ind,'topic_class_mean'] = ibin
+  
 topic_cat = pd.DataFrame(df.topic_num).reset_index()
 sentiment_compound = df['compound'].reset_index()
 sentiment_pos = df['pos'].reset_index()
@@ -50,9 +57,6 @@ facebook_shares = df.facebook_shares.reset_index()
 num_images = df.num_images.reset_index()
 
 X = topic_cat.merge(sentiment_compound, on='index')
-X = X.merge(sentiment_pos, on='index')
-X = X.merge(sentiment_neg, on='index')
-X = X.merge(sentiment_neu, on='index')
 X = X.merge(readability_index, on='index')
 X = X.merge(word_count, on='index')
 X = X.merge(unique_word_count, on='index')
@@ -75,19 +79,23 @@ X_train, X_test, y_train, y_test, y_topic_mode_train, y_topic_mode_test = train_
 print('Train X and y: ', X_train.shape, y_train.shape)
 print('Test X and y: ', X_test.shape, y_test.shape)
 
-sm = SMOTENC(categorical_features=[1], sampling_strategy='auto',
-             random_state=4, k_neighbors=5, n_jobs=1)
+sm = SMOTENC(categorical_features=[0], sampling_strategy='auto',
+             random_state=4, k_neighbors=10, n_jobs=1)
 X_train_res, y_train_res = sm.fit_resample(X_train, y_train)
 X_train_res = pd.DataFrame(X_train_res,columns = X.columns)
+
+# X_train_res = X_train.copy()
+# y_train_res = y_train.copy()
+
 print('Resampled train X and y: ', X_train_res.shape, y_train_res.shape)
 
 param_grid = {}
 param_grid['application'] = 'multiclass'
 param_grid['num_class'] = len(bins)
-param_grid['learning_rate'] = 0.01
+param_grid['learning_rate'] = 0.1
 param_grid['boosting_type'] = 'gbdt'
-param_grid['metric'] = 'multiclass'
-param_grid['lambda_l2'] = 50.0
+param_grid['metric'] = 'multi_logloss'
+param_grid['lambda_l2'] = 1.0
 param_grid['sub_feature'] = 0.8
 param_grid['bagging_fraction'] = 0.8
 param_grid['num_leaves'] = 40
@@ -148,6 +156,22 @@ print('f1 score on test data: ', f1)
 print('f1 score on test data, assuming mode for topic: ', f1_mean)
 print('Model does '+"{:.2f}".format(100*(f1-f1_mean)/f1_mean)+' % better than guessing most common class for each topic')
 
+
+y_train_num = [bins[ind][0] for ind in (pd.to_numeric(y_train, downcast='integer'))]
+y_train_pred_num = [bins[ind][0] for ind in (pd.to_numeric(y_train_pred, downcast='integer'))]
+y_test_num = [bins[ind][0] for ind in (pd.to_numeric(y_test, downcast='integer'))]
+y_pred_num = [bins[ind][0] for ind in (pd.to_numeric(y_pred, downcast='integer'))]
+y_topic_mode_test_num = [bins[ind][0] for ind in (pd.to_numeric(y_topic_mode_test, downcast='integer'))]
+
+# mse = metrics.mean_squared_log_error(y_test_num,y_pred_num)
+# mse_train = metrics.mean_squared_log_error(y_train_num,y_train_pred_num)
+# mse_mean = metrics.mean_squared_log_error(y_test_num,y_topic_mode_test_num)
+# print('\n')
+# print('mse metric on training data: ', mse_train)
+# print('mse metric on test data: ', mse)
+# print('mse metric on test data, assuming mode for topic: ', mse_mean)
+# print('Model does '+"{:.2f}".format(100*(mse_mean-mse)/mse_mean)+' % better than guessing most common class for each topic')
+
 def plot_confusion_matrix(cm, classes, normalize=False, title='Confusion matrix', cmap=plt.cm.Blues):
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
@@ -190,3 +214,12 @@ plt.figure()
 plot_confusion_matrix(cm_test, classes=class_names, normalize=True,
                       title='Normalized confusion matrix - test')
 plt.savefig('../Figs/test_confusion2_normalized.png')
+
+for topic in X['topic_num'].unique():
+  cm = metrics.confusion_matrix(y_test[X_test['topic_num'] == topic], y_pred[X_test['topic_num'] == topic])
+  title = 'Normalized confusion matrix - test - topic ' + str(topic)
+  fig = plot_confusion_matrix(cm_test, classes=class_names, normalize=True,
+                      title=title)
+  file = '../Figs/test_confusion_normalized_topic'+ str(topic)+'.png'
+  plt.savefig(file)
+  
