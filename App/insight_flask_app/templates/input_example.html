@@ -72,61 +72,107 @@
      <form action="/output" method="GET">
        <div class="form-group">
          <label for="title">Title:</label>
-         <input class="form-control input-lg" id="title" name='title' placeholder="Article title " value="This Pretax Benefits Startup Is Giving Hourly Workers a Raise" >
+         <input class="form-control input-lg" id="title" name='title' placeholder="Article title " value="DeepDive: How culture drives product strategy at Swiggy" >
        </div>
 
        <div class="form-group">
          <label for="article_text">Number of images:</label>
-         <input class="form-control input-lg" id="num_images" name='num_images' placeholder="#" value=2>
+         <input class="form-control input-lg" id="num_images" name='num_images' placeholder="#" value=5>
        </div>
 
        <div class="form-group">
          <label for="article_text">Text:</label>
-         <textarea class="form-control" rows="10" id="article_text" name='article_text' placeholder="Article text ">Most of the baristas employed by the Brooklyn Roasting Company now take home $40 to $60 more a month than they once did. Not by working more hours or getting a raise, but by keeping more of the money they earn. The coffee-shop chain uses a service called Alice, which lets employers offer pretax spending benefits without any setup costs and enrolls their employees via text message.
+         <textarea class="form-control" rows="10" id="article_text" name='article_text' placeholder="Article text ">Started just 4 and half years ago, Swiggy — the online food delivery service — is now India’s 5th most valuable startup with a valuation of $3.3 billion. Beating its peers, Swiggy has also ranked top in trust and customer satisfaction, in a food-tech survey by RedSeer. Building a scalable product that delivers user experience better than its competition, in such a small time, is indeed incredible. Especially of interest, if you are a Product Manager. We had a chat with Mr. Anuj Rathi, VP, Product Management at Swiggy, to find out his secret sauce, and how the blend of UX, Product Management, innovation and creative thinking has taken Swiggy to the next level.
 
-Pretax spending benefits let workers deduct expenses like commuting, child and adult care, glasses, and contact lenses, as well as certain dental care and medical expenses, from their taxable income. “If you have eyes, teeth, and kids, these are the things that you can spend pretax on,” says Avi Karnani, cofounder of Alice. If you spend $100 pretax, $100 of your income becomes tax-free and that adds roughly $35 to your paycheck. Employers save money too, since every dollar that an employee spends pretax is a dollar on which the employer does not pay payroll tax.
+Monsoonfish (MF): Hi Anuj, so you have been at Swiggy for more than two and a half years now, part of its journey from a small startup to a valuable unicorn. How has your experience been so far?
 
-Most employers of white-collar workers offer pretax spending benefits as a matter of course, but Alice is aimed at employers like restaurants, retailers, and nail bars who are much less likely to do so.
+Anuj: Fantastic. When I started here, we had around 12K restaurant partners and 15K delivery partners in 7 cities — and we have been on a hockey-stick curve growth since then. It’s been a product that has received a lot of consumer love.
 
-“There’s like 35 million Americans who work at Fortune 1000 companies that have benefit cultures where all the benefits are provided,” says Karnani. “And there’s 80 million Americans who are hourly workers, middle-income workers, and low-income workers who don’t have any of these benefits. They are the ones who are spending the lion’s share of their earnings on commuting, healthcare, and childcare.”
+My team and I, typically tackle these three things:
 
-In 2017, about 1.8 million hourly workers earned exactly or less than the federal minimum wage of $7.25 per hour. Two-thirds of those workers were employed in food preparation and serving jobs. In 2016, the annual employee turnover rate in the restaurants and accommodations sector was 73%. Constantly replacing workers costs money, so employers in the hospitality sector are interested in anything that might help them to hire or retain people. That made hospitality an ideal first market for Alice.
+● Building the product Solving more customer problems, in better ways
+● And is it generating value? Creating reach, impact and long term value
+● Building an organization. Seeding a culture of excellence, ownership and consumer-first approach.
+Seeding organizational culture from the start is extremely critical to build a sustainable organization. We often see startups linearly focussed on building growth and shareholder value — but building culture is important, the way you work. We take appropriate approaches — no shortcuts while building high-confidence, existential products. For experimental products we like to build the MVP with a fail fast and learn approach. For experimental ones, we almost never build for scale in the get go. This is what has helped the company achieve so much success in such a short time.
+MF: That sounds great. To make this more tangible for us — we have seen Swiggy POP and Swiggy SUPER, two new features. Could you walk us through how you arrived at Swiggy POP feature, from concept to implementation? We want to understand the basis of decision-making for a Product manager from your perspective.
 
-“If you are a barista at Brooklyn Roasting Company and you take a MetroCard to get there, you’re going to get about a 25¢ an hour raise,” says Karnani. “If you drop your child off at daycare on the way there, it goes up to $1.50 an hour. It takes an act of Congress to get $1.50 more per hour for people.”
-
-To offer pretax spending benefits, employers must navigate an administrative obstacle course of HSAs (Healthcare Spending Account), HRAs (Health Reimbursement Arrangements), CRAs (Commuter Reimbursement Account), and FSAs (Flexible Spending Accounts). Alice hides all those accounts under the hood, hooks into the payroll system of an employer, automatically tracks the pretax spending of each employee, and deducts that spending from payroll.
-
-Even when employers invest in providing pretax spending benefits, employees often don’t use them. “Most of the industry has enrollment rates at like 5% to 10%,” says Karnani. “Fifteen percent is a good day for those people.” This is because there are hurdles for employees, too. Employers often issue a separate card that employees must remember to use when buying their glasses or their mass transit card. Hourly workers living paycheck to paycheck must pre-select how much money to set aside for glasses or childcare or commuter costs in the following year. “You are asking an hourly employee, ‘Hey, would you rather get your paycheck today, or set aside $400 for the year to cover things that you might not buy?’” says Karnani.
+Anuj: Swiggy POP started a while ago, and it is doing really well now. We actually started from two ends. One was, from a user standpoint, where most of us are office-goers.
 
 
-Alice hooks up to an employee’s existing debit, credit, and prepaid cards—no additional cards are necessary — and examines their spending history to select the benefits for which they may be eligible and how much they could claim. The service then uses text messages to ask workers a few questions about how they get to work or whether they have kids in childcare, automatically tracks spending on each relevant benefit, texts employees to confirm their eligible transactions, and deducts them from payroll. Along with offering a stand-alone version, the startup also partners with Square to offer free automated pretax benefits in that company’s payroll product for small businesses.
+You need to go to a restaurant or order, and the first thing is choosing from a menu. Most restaurants will have options such as curries and vegetables during lunch, which are quite often for two-three people. You have to mix-and-match and choose something. And everyday! What ends up happening is a lot of food goes to waste, because not all restaurants serve meal for one. There did not exist any product which solved this problem, and it was one of the first things that we started thinking about.
 
-“What Alice has done is take all of these products that are inherently difficult to use, and stuff them under the hood,” says Karnani. “Our brand promise is no forms, no math, no acronyms.”
+Another end for us was that the choice architecture in most of the restaurants is not very helpful, especially in situations where you have to quickly order something which is healthy, affordable and feasible at the same time.
 
-The Origin of Alice
-In 2014, Karnani was a fellow at Brooklyn’s Blue Ridge Labs @ Robin Hood, which builds technology products for low-income Americans. He was already the founder of a financial services startup and was interested in how technology could increase financial inclusion. Karnani and his Alice cofounder Paul Barnes-Hoggett noticed a common thread among the low-income New Yorkers they interviewed during the fellowship.
+We were thinking of these problems from multiple points of view. From the delivery and restaurant side, since the orders are on demand, how can you bring the delivery cost down and pass on the value to consumers. How can you give more predictability to the restaurants?
 
-“Everybody was using a seven-day MetroCard,” says Karnani. “If you pay for the weekly transit pass, you pay 15% more in New York than if you buy the monthly. In Chicago, it’s like 20%, and Philadelphia, depending on which line you ride, it’s potentially 50% more expensive.”
+Once we had a grasp of these problems, we thought of creating one solution to cater to all of them. We toyed around a few ideas. That’s how Swiggy POP was born — it was a flash of brilliance really, that combined both of the problems and solved for them.
 
-People with low incomes often pay more for products and services than those who can afford to invest more up front or have a better credit score. A minute of call time or a megabyte of data costs less with a monthly phone subscription than with a prepaid phone. A yearly or monthly travel pass costs less per journey than a weekly one.
 
-Karnani and Barnes-Hoggett started lending people 30-day MetroCards as a first step toward building a microloan infrastructure for hourly workers in New York. Monthly cards were mailed to users who paid weekly and would hook their credit, debit, or prepaid cards up to a software system that tracked their payments.
+Story of how Swiggy POP was built
+It was a big bet for us, because nothing like this had been tried before. Consumer Internet part of Swiggy is well-known to everyone, but there is also a massive operational arm to it. On the account management part, we had to think about how our account managers will need to go in the field and convince restaurant managers of this story and why they should sell on POP.
 
-“We ended up having a 97% repayment rate, which is higher than Capital One,” says Karnani. “And we learned how to have a conversation over messaging about things like loan payments with hourly workers who are not especially financially sophisticated.”
+The back-end work that goes into building a product like POP is huge. From an engineering perspective, we had to do a lot of simple things to get it right. We needed to make sure that
 
-In the meantime, New York City passed a law requiring companies with more than 20 employees to offer pretax commuter benefits. “Out of nowhere, a bunch of employers called us up,” said Karnani. “They said, ‘We heard a bunch of our workers are borrowing their MetroCards from you guys. Can you turn that into some kind of commuter benefit thing that would make us compliant?’” Karnani stopped lending MetroCards and started building software for pretax spending benefits. One of his first customers was the Brooklyn Roasting Company.
+ⓐ We are following the right problem
+ⓑ We are articulating it in a way that the entire company understands what we are trying to build 
+ⓒ Highlighting and ensuring that this is a strategic priority for us, and 
+ⓓ Envisioning how this is going to look like to the consumer.
+We took a lot of consumer feedback even before starting this product. Finally when we took it to market, Swiggy POP turned out to be super-hit.
 
-Tiia Hyrske manages the accountancy team at Brooklyn Roasting Company, which roasts coffee locally for its eight stores in Brooklyn (plus one in Manhattan) and many wholesale customers. The company employs around 70 hourly workers, most of whom are baristas.
+MF: So when this kind of involvement from different fields and teams is required, how does collaboration work at Swiggy? When you build something of such scale, many teams will have to work together to ensure a product or feature turns out well. How does that happen?
 
-Brooklyn Roasting Company uses Alice to offer commuter benefits. New hires get a flyer that explains how they can use Alice to enroll. “Ninety-eight percent of the new hires do enroll with Alice,” says Hyrske. “It’s almost everybody. It couldn’t be easier and it’s tangible money.”
+Anuj: It’s a great question, actually. Swiggy is a three-way marketplace. That is unlike ecommerce websites which are two-way marketplaces, between the buyer and seller sides, and supply chain is quite far and disintegrated from the storefront. This enables these players to have separate teams working on different aspects of a solution and collaborating much lesser. That’s not the case for us. Every product or feature we are going to think about, will touch all three pieces of our marketplace. For example, Swiggy POP is going to touch the vendor side, consumer side, operations side etc. Now here itself you have three product management teams, three engineering and design teams that get involved. At the same time, you’ll have the offline supply and sales team, and the operations team that will get involved as well. So virtually every project will touch every piece of the marketplace. And this is not a bad thing, it is a great thing in fact.
 
-Alice charges employers 50% of the money the software saves them on payroll tax. “It’s completely free to us besides the percentage of tax savings that Alice bills to Brooklyn Roasting Company,” says Hyrske. “Alice does the deductions in the payroll. It’s a benefit not to have to invest time administering it.”
+Because the companies which develop a muscle for massive collaboration at scale, are the ones that will be able to deliver such products in the market. Whereas, companies which cannot collaborate effectively, will not be able to either manage the supply side well, or deliver a sub-par customer experience, or will lack in some piece of the puzzle. So I believe this is actually the secret sauce of launching great products. Collaboration, at scale.
+In fact, even in our product management teams, you are supposed to know delivery technologies, do some deliveries. You are expected to attend consumer calls, go out for restaurant visits. So our daily routine is filled with collaborative meetings, jamming with different teams and building products together.
 
-Karnani declined to disclose exactly how many customers use Alice, but said that the number is in the hundreds, and that those customers employ anywhere between two and 5,000 workers. In the long term, he wants Alice to build user-friendly financial services that are tailored to the needs of low-income workers.
+MF: Our next question was actually going to be if your entire day is spent in meetings!
 
-“If you are someone who is an hourly worker in the United States, you don’t have a good experience with banks and financial services,” Karnni says. “They do not meet you where they are. Their forms are complicated and scary. Benefits are weird. They’re designed by people who make more money than you and think about their financial lives differently.
+Anuj: *Chuckles* See, there is a difference between a product leader and a product manager. There are various things happening in an organization that a product leader needs to be deeply aware of. At the same time, you are defining company strategy, meeting a lot of leadership teams. You are meeting product managers to give them clear direction in how to solve a problem. You are actually setting up a culture here, and your product managers bring out the best work that they can.
 
-“We are not helping people buy more stuff they don’t need. We are not taking people’s data and pulling it out from under them. We’re helping a barista get a raise. We’re helping somebody changing bedpans keep more of her money. Tech that does good — why we all got into technology in the first place.”</textarea>
+Taking a detour here. When I was starting the product management team at Swiggy, we hired very different kind of people. We did not look for seasoned product managers. We looked for young people who were extremely gritty, who could communicate well and had raw sharps. We then trained them quarter over quarter on certain competencies. We started them on smaller challenges and then took them to bigger ones. We ensured that they learnt and developed wings so they could fly alone. And doing this is not easy, it is painstakingly difficult. And coming back to your question, this is where most of my time goes, and this is why I find these meetings fantastic. You are not just making a point, but you are mentoring — not just one person but several people at once. It does not give you time for slow-thinking and, say, consider one product at a time — you have to steal time for that from somewhere else in your schedule.
+
+But all said, these meetings are an opportunity to seed the culture, set the common vision and align everybody. Alignment can become an issue at times in big companies, which is why I think rather than running away from these meetings, a product leader needs to use them strategically and as an opportunity.
+
+MF: We are a UX, UI Design firm. And what interests us the most is when does UX come into picture for you when developing products? You gave us a great example of Swiggy POP. In that case, did UX come into picture right at the product development stage, or after everything else had been finalised?
+
+Anuj: I’ll tell you something very interesting.
+
+At Swiggy, we follow a process which we define as “Show, don’t tell.” We don’t start with anything else, but the experience that the consumer will have. All the strategic decisions are taken after that.
+When you are building UX for a product, say you are making a screen for Swiggy POP, with 20 dishes on display — this screen is also helping me define my strategy. Are users going to respond well to 20 dishes? Should there be more, how many more? What kind of dishes should they be? How will that affect my supply side? Do I need to have a good mix of Veg and Non Veg, or cuisines?
+
+If i don’t show it, it is not just a test of UX, but that of the entire product itself. So UX becomes extremely important — we don’t start products without UX first. It is not just about getting the UX right as well, to be sure, it is about getting the entire product right, that is going to be built around the consumer experience. We start with ‘The Wall.’ It is literally a wall that slowly starts getting filled with post-its and paper wireframes as ideas and strategies get formed. This is how the product and design teams come together. From this wall, we graduate to better-looking wireframes, and then prototypes.
+
+Recently, we have also been doing a lot of prototype testing. Not to only seek feedback about the UX, but to bring a strategy for our supply-side, operations etc. For example, like I said above, what number of dishes should POP menu have? What’s the max and the minimum?
+
+These wiferames also helped us think further. For eg. Can we get the user to use POP in just three taps? Not just choose a dish, but to actually complete the transaction? How would the interaction be if we had to cut it down from, say 10 minutes, to 10 seconds?! There were many UX iterations we did for POP before finalising it.
+
+MF: We would like to know more about your journey from a product manager to a product leader. How has your role scaled — what were your priorities and responsibilities at the start of career versus now?
+
+Anuj: It’s not just that — this is a deep rooted question really. I started out in this field at a time when there weren’t many products coming out of India for the Indian consumers.
+
+Product management wasn’t a well-defined field and people didn’t exactly know what to expect of product managers! Some thought they needed to do everything, be the best at design, engineering, business and so on. While others thought product managers would just convert business requirements into a kind of document that engineering would understand.
+From the start, I reported to CEOs, who were not necessarily product leaders or had experience in mentoring product managers. So there was a lot of self learning involved. I think a lot of Indian product managers of the time went through this phase.
+
+Additionally, something that can make things a little difficult in India even now, is that a lot of times you’ll find senior leadership who has not worked in a technology company. They often come from ‘offline’ background. It is great when they are willing to understand product management, and you need to build trust with them.
+
+At the start of my career, we didn’t have certainty over what to expect. So I was a little impatient, I expected faster decision-making and for things to move quickly. I couldn’t understand why things wouldn’t align faster in a company. I remember often thinking that everybody is so good at what they do, but no one seems to agree and reach a consensus!
+
+And this is what is changing now, I can vouch at least in Swiggy. We define the role of product manager and try to make it easier for them. As a product leader, I try to make them understand why aligning can be tough, and hence your communication needs to be top-notch. People need to see the vision, and hence you need to show it to them, rather than just trusting your judgement and building it very quickly. We are building it collaboratively, not alone. Hope this answers your question?
+
+MF: Absolutely! This gives us a good segue to our next question, what would your advice be for young product managers that are starting out now? What are the things they wouldn’t have learnt in business schools that they need to be prepared for?
+
+Anuj: Oh there are lots and lots of things that I can talk about here. I’ve had a chance to mentor a lot of product managers, who were not product managers in their life, but now are the best ones in the country.
+
+Not everybody is suited to a product manager’s role, to be honest. There are three things or traits that I absolutely look for in Product Managers:
+
+➀ Grit ➁ Communication ➂ Raw sharps
+Grit, meaning how deep are you willing to go to achieve something. How passionate you are, how curious? Are you a person willing to learn a lot? I don’t think it’s a trait that you can necessarily develop. Maybe if you are not super-gritty, you should join a bigger company where you don’t necessarily have to do everything.
+
+A lot of people ask my why I put communication among the top spots. Essentially, all that you do in your work, depends on communication. Are you a great communicator and a story-teller? Are you conveying yourself, say, when you brainstorm with a developer on a user-journey? Is it getting built, exactly as you have in your head? When you are communicating with senior leadership, can you articulate the vision clearly and convince them that this is going to win the battle for your roadmap? You may be a fantastic thinker, but if you are not able to communicate effectively with the different kind of people around you, you won’t become a successful product manager. It helps you in meetings, to align different people, as a war-cry in tough situations. It helps you set the culture. I believe product managers are also the culture ministers of an organisation. And this makes communication a top quality that needs to be in your arsenal.
+Thirdly, you need to have raw sharps. You need to be able to connect the dots properly, think through the short term and long term plans and roadmaps, have problem-solving skills. At Swiggy, when you face challenges, they are usually three-way marketplace challenges. A person needs to have raw sharps and problem-solving ability to overcome them.
+
+So these three things are very important, and in that order. You can talk about 20 different competencies, but I am taking an uber view of it, and these three things are very necessary for a product manager to have. Developing hard skills comes after this, and is dependant on whether you want to be a consumer internet product manager, or a SaaS company product manager and so on.</textarea>
        </div>
 
 

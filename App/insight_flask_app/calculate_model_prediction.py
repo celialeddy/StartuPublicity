@@ -22,7 +22,7 @@ def find_min_perturb(model, df, bins, feature, minperturb, max_claps):
         iter += 1
         perturb = minperturb * iter
         max_claps2 = calculate_prediction_change(model, df, bins, feature, perturb)
-#         print(iter,perturb,max_claps,max_claps2)
+        print(iter,perturb,max_claps,max_claps2)
         if max_claps2 < max_claps or iter > 100:
             max_claps2 = 0
             break
@@ -110,8 +110,17 @@ def calculate_model_prediction(df):
     instruction = perturb_df['dir'][indmax]
   else:
     instruction = ' '
+    
+  if 'word' in instruction:
+    instruction = instruction + ' by ' + str(int(perturb_df['perturb'][indmax])) + ' words'
+  elif 'sentences' in instruction:
+    instruction = instruction + ' by ' + str(int(perturb_df['perturb'][indmax]))
+  elif 'average' in instruction:
+    instruction = instruction + ' by ' + str(int(perturb_df['perturb'][indmax])) + ' words'
+  elif 'images' in instruction:
+    instruction = instruction + ' by ' + str(int(perturb_df['perturb'][indmax]))
 
   perturb_fb,max_claps_fb = find_min_perturb(model_lgbm, X, bins, 'facebook_shares', 1, max_claps)
 
-  return min_claps, max_claps, instruction, max_claps_inst, max_claps_fb
+  return min_claps, max_claps, instruction, max_claps_inst, max_claps_fb, perturb_fb
  

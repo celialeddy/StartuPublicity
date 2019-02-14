@@ -38,7 +38,7 @@ def output():
     return render_template("input_nonnumeric.html")
   [df, min_claps_topic, max_claps_topic, max_max_topic] = preprocess_text(title,article_text,num_images)
   print(title,num_images)
-  [min_claps, max_claps, instruction, max_claps_inst, max_claps_fb] = calculate_model_prediction(df)
+  [min_claps, max_claps, instruction, max_claps_inst, max_claps_fb, perturb_fb] = calculate_model_prediction(df)
   min_claps = int(min_claps)
   max_claps = int(max_claps)
   if max_claps_inst > 0:
@@ -50,7 +50,8 @@ def output():
       max_max_topic=max_max_topic,
       instruction=instruction,
       max_claps_inst=max_claps_inst,
-      max_claps_fb=max_claps_fb)
+      max_claps_fb=max_claps_fb,
+      perturb_fb=perturb_fb)
   else:
     return render_template("output2.html",title=title,article_text=article_text,
       min_claps=min_claps,
@@ -58,7 +59,8 @@ def output():
       min_claps_topic=min_claps_topic,
       max_claps_topic=max_claps_topic,
       max_max_topic=max_max_topic,
-      max_claps_fb=max_claps_fb)
+      max_claps_fb=max_claps_fb,
+      perturb_fb=perturb_fb)
 
 @app.route('/about')
 def about():
