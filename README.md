@@ -7,3 +7,5 @@ I developed this app as part of the Insight Data Science Fellows Program in New 
 
 You can check out this app at www.startupublicity.com
 
+Contact me at celialeddy@gmail.com if you want access to the data!
+
