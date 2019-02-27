@@ -1,3 +1,15 @@
+# This script trains preprocessed Medium articles so they are ready for modeling
+#
+# Read in a dataframes of Medium articles and facebook shares
+# Note: Articles have been scraped using Selenium and BeautifulSoup
+#       Contact celialeddy@gmail.com for access to the data
+#
+# Article texts and titles are tokenized and lemmatized and stop words are removed
+# Calculate writing-style and readability features
+# Topic modeling on article texts using LDA
+# Parse article sentiments using VADER
+# Save preprocessed articles in dataframe
+
 import numpy as np
 import pandas as pd
 import random
@@ -24,6 +36,7 @@ import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+# Define functions to tokenize, lemmatize, and remove stopwords from articles
 
 def get_lemma(word):
     lemma = wn.morphy(word)
@@ -45,6 +58,7 @@ def prepare_text_for_lda(text):
     tokens = [get_lemma(token) for token in tokens]
     return tokens
     
+# Read in dataframes containing Medium articles and the number of facebook shares
 
 print('Reading in dataframes...')
 columns = ['url','title','author','text','claps','reading_time','num_images']
@@ -75,6 +89,8 @@ df_startuptag.set_axis(['urls','title','author','text','claps','reading_time','n
 df_fb.set_axis(['urls','facebook_shares'],axis=1,inplace=True)
 df_fb['facebook_shares'] = pd.to_numeric(df_fb['facebook_shares'])
 
+# Merge dataframes together and reformat data types to be correct
+
 df = df_startuptag.merge(df_fb, on='urls')
 df = df.dropna(axis=0)
 df.reset_index(inplace=True)
@@ -97,11 +113,15 @@ for ind,reading_time in enumerate(df.reading_time):
 
 df['num_images'] = pd.to_numeric(df['num_images'])
 
+# Remove extra text from article titles
+
 print('Reformatting titles...')
 df['title'] = df.title.str.replace('– The Startup – Medium','')
 df['title'] = df.title.str.replace('– Medium','')
 df['title'] = df.title.str.replace('– The Startup','')
 df['text'] = df.text.str.replace('\n',' ')
+
+# Tokenize, lemmatize, and remove stopwords from article texts
 
 print('Tokenizing titles and text...')
 df['title_tokens'] = df.apply(lambda x: prepare_text_for_lda(x['title']), axis=1)
@@ -119,6 +139,8 @@ for ind,text in enumerate(df.text):
 df = df.dropna(axis=0)
 df.reset_index(inplace=True)
 df = df.drop(['index'],axis=1)
+
+# Calculate writing-style and readability features
 
 print('Calculating writing-style features...')
 df['readability_index'] = df.apply(lambda x: textstat.text_standard(x['text'], float_output=True), axis=1)
@@ -149,6 +171,8 @@ for ind,sents in enumerate(df.text_sentences):
     df.loc[ind,'average_sentence_length'] = num_tokens/num
     df.loc[ind,'average_word_length'] = num_characters/num_tokens
 
+# Perform topic modeling and assign topic to each article
+
 print('Performing topic modeling...')
 text_data = df.text_tokens
 dictionary = corpora.Dictionary(text_data)
@@ -165,6 +189,8 @@ for ind,tokens in enumerate(df['text_tokens']):
     test = lda.get_document_topics(dictionary.doc2bow(tokens))
     topics = sorted(test,key=lambda x:x[1],reverse=True)
     df.loc[ind,'topic_num'] = topics[0][0]
+
+# Parse article sentiments using VADER
 
 print('Performing sentiment analysis...')
 analyser = SentimentIntensityAnalyzer()
@@ -191,6 +217,8 @@ for ind,sents in enumerate(df.text_sentences):
     df.loc[ind,'pos'] = np.mean(pos)
     df.loc[ind,'neg'] = np.mean(neg)
     df.loc[ind,'neu'] = np.mean(neu)
+
+# Save pre-processed Medium articles in dataframe
 
 df = df.dropna(axis=0)
 df.reset_index(inplace=True)
