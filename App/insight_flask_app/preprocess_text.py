@@ -1,3 +1,13 @@
+# This function preprocesses user input to prepare for making a prediction
+#
+# Takes user-inputted article title, text, and number of images
+#
+# Article texts and titles are tokenized and lemmatized and stop words are removed
+# Calculate writing-style and readability features
+# Topic modeling on article text using LDA
+# Parse article sentiment using VADER
+# Save preprocessed article in dataframe
+
 import numpy as np
 import pandas as pd
 from spacy.lang.en import English
@@ -13,6 +23,8 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 import gensim
 from gensim import corpora
 import textstat
+
+# Define functions to tokenize, lemmatize, and remove stopwords from articles
 
 def get_lemma(word):
   lemma = wn.morphy(word)
@@ -35,6 +47,10 @@ def prepare_text_for_lda(text):
   return tokens
         
 def preprocess_text(title, text, num_images):
+
+# Reformat data types, remove extra texts from article titles, 
+# tokenize, lemmatize, and remove stopwords from article texts
+
   df = pd.DataFrame(columns=['title','text','num_images'])
   df.loc[0,'title'] = title.replace('– The Startup – Medium','')
   df['title'] = df.title.str.replace('– Medium','')
@@ -48,6 +64,8 @@ def preprocess_text(title, text, num_images):
   sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
   df['text_sentences'] = df.apply(lambda x: sent_detector.tokenize(x['text']), axis=1)
       
+# Calculate writing-style and readability features 
+
   df['readability_index'] = df.apply(lambda x: textstat.text_standard(x['text'], float_output=True), axis=1)
   re_tokenizer = RegexpTokenizer(r'\w+')
   
@@ -66,6 +84,13 @@ def preprocess_text(title, text, num_images):
   df['average_word_length'] = num_characters/num_tokens
   df['sentence_count'] = len(df.text_sentences)
   df['average_sentence_length'] = num_tokens/len(df.text_sentences[0])
+  print(df['word_count'])
+  print(df['unique_word_count'])
+  print(df['average_word_length'])
+  print(df['sentence_count'])
+  print(df['average_sentence_length'])
+
+# Assign article topic using pre-trained LDA model
 
   lda = gensim.models.ldamodel.LdaModel.load('./insight_flask_app/lda.gensim')
   dictionary = corpora.Dictionary.load('./insight_flask_app/dictionary.gensim')
@@ -74,7 +99,9 @@ def preprocess_text(title, text, num_images):
   test = lda.get_document_topics(dictionary.doc2bow(tokens))
   topics = sorted(test,key=lambda x:x[1],reverse=True)
   topic_num = topics[0][0]
-  df.loc[0,'topic_num'] = topics[0][0]
+  df.loc[0,'topic_num'] = topic_num
+
+# Parse article sentiment using VADER
 
   analyser = SentimentIntensityAnalyzer()
   sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
@@ -94,12 +121,17 @@ def preprocess_text(title, text, num_images):
   df['neg'] = np.mean(neg)
   df['neu'] = np.mean(neu)    
 
+# Find typical range of claps for articles with a similar topic
+
   min_claps_topics = [0,0,0,50,0,0,0,0,0,0,0,0,0,0,0,0,100,0,200,50]
   max_claps_topics = [5,5,5,100,5,5,5,5,5,5,5,5,5,5,5,5,200,5,500,100]
   max_max_topics = [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 500, 1000, 1000,
     1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000]
-  min_claps_topic = min_claps_topics[int(topics[0][0])]
-  max_claps_topic = max_claps_topics[int(topics[0][0])]
-  max_max_topic = max_max_topics[int(topics[0][0])]
+  min_claps_topic = min_claps_topics[int(topic_num)]
+  max_claps_topic = max_claps_topics[int(topic_num)]
+  max_max_topic = max_max_topics[int(topic_num)]
+
+# Return dataframe with preprocessed features for input article
+
   return df, min_claps_topic, max_claps_topic, max_max_topic
   

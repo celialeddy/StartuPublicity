@@ -1,9 +1,21 @@
+# This function predicts the number of claps expected for the user-inputted article
+# and provides suggestions for ways to improve its popularity.
+#
+# Read in a dataframe of the pre-processed article
+# Number of claps are bucketed into 10 bins
+# SMOTE upsampling is performed on the minority classes to balance the classes
+# Train gradient-boosted decision tree using LightGBM
+# Calculate model performance metrics
+
 import numpy as np
 import pandas as pd
 import lightgbm as lgbm
 import os
 
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
+
+# Define functions to calculate the minimum perturbation to article features
+# that will lead to an increase in the article popularity
 
 def calculate_prediction_change(model, df, bins, feature, perturb):
   df2 = df.copy()
@@ -30,6 +42,8 @@ def find_min_perturb(model, df, bins, feature, minperturb, max_claps):
 
 def calculate_model_prediction(df):
   
+# Calculate feature matrix X 
+
   topic_cat = pd.DataFrame(df.topic_num).reset_index()
   sentiment_compound = df['compound'].reset_index()
   sentiment_pos = df['pos'].reset_index()
@@ -45,9 +59,6 @@ def calculate_model_prediction(df):
   num_images = df.num_images.reset_index()
 
   X = topic_cat.merge(sentiment_compound, on='index')
-#   X = X.merge(sentiment_pos, on='index')
-#   X = X.merge(sentiment_neg, on='index')
-#   X = X.merge(sentiment_neu, on='index')
   X = X.merge(readability_index, on='index')
   X = X.merge(word_count, on='index')
   X = X.merge(unique_word_count, on='index')
@@ -58,23 +69,20 @@ def calculate_model_prediction(df):
   X = X.merge(num_images, on='index')
   X = X.drop(['index'],axis=1)
   
-  print('Types00: ')
-  print(X.dtypes)
-  print(X['topic_num'])
-#   X.loc[:,'topic_num'] = X['topic_num'].astype('category')
   X['topic_num'] = pd.Categorical(X.topic_num)
-  print('Types: ')
-  print(X.dtypes)
-  print(X['topic_num'])
-    
-  bins = [[0,5],[5,10],[10,20],[20,50],[50,100],[100,200],[200,500],[500,1000],[1000,10000],[10000,1000000]]
-  model_lgbm = lgbm.Booster(model_file='./insight_flask_app/lgbm_model') 
   
+# Predict class using pre-trained lgbm model 
+# (Predicted class is the one with the highest probability)
+
+  bins = [[0,5],[5,10],[10,20],[20,50],[50,100],[100,200],[200,500],[500,1000],[1000,10000],[10000,1000000]]
+  model_lgbm = lgbm.Booster(model_file='./insight_flask_app/lgbm_model')   
   
   predicted_claps_class = int(np.argmax(model_lgbm.predict(X),axis=1))
   print('Predicted class: ',predicted_claps_class)
   min_claps = bins[predicted_claps_class][0]
   max_claps = bins[predicted_claps_class][1]
+
+# Find perturbations to article features that will lead to an increase in article popularity  
 
   perturb_df = pd.DataFrame(columns = ['feature','minperturb','dir','max_claps','perturb'])
   perturb_df['feature'] = ['compound','compound',
@@ -103,7 +111,9 @@ def calculate_model_prediction(df):
                       model_lgbm, X, bins, feature, perturb_df['minperturb'][ind], max_claps)
     print('found:')
     print(ind,feature,perturb_df.loc[ind,'perturb'],perturb_df.loc[ind,'max_claps'])
-#   
+   
+# Find feature perturbation that leads to the biggest popularity improvement
+
   indmax = np.argmax(perturb_df['max_claps'])
   max_claps_inst = perturb_df['max_claps'][indmax]
   if max_claps_inst > 0:
@@ -120,7 +130,11 @@ def calculate_model_prediction(df):
   elif 'images' in instruction:
     instruction = instruction + ' by ' + str(int(perturb_df['perturb'][indmax]))
 
+# Calculate the effect of FB shares
+
   perturb_fb,max_claps_fb = find_min_perturb(model_lgbm, X, bins, 'facebook_shares', 1, max_claps)
+
+# Return predictions and suggestions for improving article
 
   return min_claps, max_claps, instruction, max_claps_inst, max_claps_fb, perturb_fb
  
